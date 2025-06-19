@@ -39,10 +39,10 @@ public class ResponseObject {
      * @param msj Mensaje para mostrar String
      * @param obj Objeto tipo T para mostrar
      */    
-    public void setAsNotSuccessfully(String msj){
+    public void setAsNotSuccessfully(Object msj){
         this.successfully = false;
         this.setMsj(msj);
         this.setObj(null);
-    }     
+    }      
 }
 
