@@ -83,10 +83,6 @@ public class CarritoCompraProductoService {
 
     public ResponseObject agregarProductoCarrito(int idUsuario, List<CarritoCompraProducto> carritoCompraProductos){
 
-        /*IMPORTANTE:Al pagar el valor del carrito de compras es que se deben descontar 
-         las unidades del inventario, ya que el pago significa que el cliente
-        esta dispuesto a pagar el valor del carrito. */
-
         rObj = new ResponseObject();
         rObj = usuarioService.obtenerUsuarioPorIdWitOutDto(idUsuario);
         if(!rObj.isSuccessfully()){
@@ -110,6 +106,7 @@ public class CarritoCompraProductoService {
             
             this.eliminarProductosCarrito(carritoCompraActual.getIdCarritoCompra());
 
+            Producto producto = null;
             for (CarritoCompraProducto carritoCompraProducto : carritoCompraProductos) {
                 rObj = productoService.obtenerProductoPorId(carritoCompraProducto.getProductoCarritoCompra().getIdProducto());
 
@@ -117,19 +114,32 @@ public class CarritoCompraProductoService {
                     return rObj;
                 }
 
-                Producto producto = (Producto) rObj.getObj();
+                producto = (Producto) rObj.getObj();
                 if(carritoCompraProducto.getUnidadesProducto() <= 0){                    
                     rObj.setAsNotSuccessfully(
                         "Para el producto con id ".concat(producto.getIdProducto()+"")
                         .concat(" no se asignaron unidades")
                     );
-                    return rObj;                
+                    return rObj;      
                 }
+
+                if(carritoCompraProducto.getUnidadesProducto() > producto.getStockProducto()){
+                    rObj.setAsNotSuccessfully("No hay suficioentes unidades para el producto "
+                    .concat(producto.getNombreProducto()));
+                    return rObj;
+                }
+
+                rObj = productoService.descontarUnidadesStock(producto, carritoCompraProducto.getUnidadesProducto());
+                if(!rObj.isSuccessfully()){
+                    return rObj; 
+                }                
 
                 carritoCompraProducto.setCarritoCompra(carritoCompraActual);
                 carritoCompraProducto.setProductoCarritoCompra(producto);
                 productosParaCarrito.add(carritoCompraProducto);
+
             }
+            
             rObj.setAsSuccessfully("Productos agregados con exito"
             , carritoCompraProductoMapper.toDTO(
                 (List<CarritoCompraProducto>) carritoCompraProductoRepository.saveAll(productosParaCarrito)

@@ -47,13 +47,10 @@ public class ProductoServicePp {
         rObj = new ResponseObject();
         Optional<Producto> producto = productoRepository.findById(idProducto);
         if(producto.isPresent()){
-            rObj.setMsj("Producto encontrado");
-            rObj.setAsSuccessfully();
-            rObj.setObj(producto.get());
-        } else {
-            rObj.setMsj("No se encontró el producto con id "
-                .concat(idProducto+""));
+            rObj.setAsSuccessfully("Producto encontrado", producto.get());
+            return rObj;
         }
+        rObj.setMsj("No se encontró el producto con id ".concat(idProducto+""));        
         return rObj;
     }
 
@@ -192,10 +189,10 @@ public class ProductoServicePp {
         return rObj;
     }
 
-    public ResponseObject descontarUnidadesStock(int idProducto, Producto producto, int unidades){
+    public ResponseObject descontarUnidadesStock(Producto producto, int unidades){
         rObj = new ResponseObject();
         producto.setStockProducto(producto.getStockProducto()-unidades);
-        rObj = actualizar(idProducto, producto);
+        rObj = actualizar(producto.getIdProducto(), producto);
         if(rObj.isSuccessfully()){
             producto = (Producto) rObj.getObj();
             if(producto.getStockProducto() <= producto.getStockMinimoProducto()){
