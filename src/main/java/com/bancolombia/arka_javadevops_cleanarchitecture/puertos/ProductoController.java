@@ -1,4 +1,4 @@
-package com.bancolombia.arka_javadevops_cleanarchitecture.usecases;
+package com.bancolombia.arka_javadevops_cleanarchitecture.puertos;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
