@@ -18,7 +18,7 @@ import com.bancolombia.arka_javadevops_cleanarchitecture.entities.Producto;
 import com.bancolombia.arka_javadevops_cleanarchitecture.entities.repositories.ProductoRepository;
 import com.bancolombia.arka_javadevops_cleanarchitecture.utils.ResponseObject;
 
-public class ProductoServiceCreate {
+public class ProductoServiceCreateTest {
 
     //Mock:Instancia falsa que simulara la accion real, a la cual en cada test se define que es lo que retorna
     /*
@@ -64,7 +64,7 @@ public class ProductoServiceCreate {
         //Definicion de los metodos que se mockearon            
 
         //En response se almacena el resultado al llamar a crearNuevo, el metodo funcionara
-        //con los Mocks creados
+        //con la configuracion de los mock creados
         ResponseObject response = productoServiceCreateImp.crearNuevo(
             new Producto(1, "ref01", "producto", "descripcion", 1.0, 1, 1, null, 1, null
                 ,null, null )
