@@ -2,6 +2,7 @@ package com.bancolombia.arka_javadevops_cleanarchitecture.usecases.interfaces;
 
 import com.bancolombia.arka_javadevops_cleanarchitecture.entities.Producto;
 import com.bancolombia.arka_javadevops_cleanarchitecture.utils.ResponseObject;
+import com.bancolombia.arka_javadevops_cleanarchitecture.utils.TypeModStock;
 
 public interface ProductoServiceMod {
 
@@ -9,7 +10,7 @@ public interface ProductoServiceMod {
 
     ResponseObject eliminar(int idProducto);
 
-    ResponseObject descontarUnidadesStock(int idProducto, Producto producto, int unidades);
+    ResponseObject modificarUnidadesStock(int idProducto, Producto producto, int unidades, TypeModStock typeModStock);
 
 }
 

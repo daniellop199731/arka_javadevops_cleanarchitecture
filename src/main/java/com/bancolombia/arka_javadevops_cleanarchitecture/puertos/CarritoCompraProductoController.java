@@ -55,7 +55,7 @@ public class CarritoCompraProductoController {
         @PathVariable(required = true) int idUsuario
         , @RequestBody List<CarritoCompraProducto> carritoCompraProductos    
     ) { 
-        ResponseObject response = carritoCompraProductoService.agregarProductoCarrito(
+        ResponseObject response = carritoCompraProductoService.agregarProductosCarrito(
                 idUsuario, carritoCompraProductos);
 
         if(response.isSuccessfully()){

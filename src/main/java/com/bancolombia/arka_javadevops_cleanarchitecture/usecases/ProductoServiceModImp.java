@@ -10,6 +10,7 @@ import com.bancolombia.arka_javadevops_cleanarchitecture.entities.repositories.P
 import com.bancolombia.arka_javadevops_cleanarchitecture.usecases.interfaces.ProductoServiceMod;
 import com.bancolombia.arka_javadevops_cleanarchitecture.usecases.interfaces.ProductoServiceUtils;
 import com.bancolombia.arka_javadevops_cleanarchitecture.utils.ResponseObject;
+import com.bancolombia.arka_javadevops_cleanarchitecture.utils.TypeModStock;
 
 import lombok.RequiredArgsConstructor;
 
@@ -54,20 +55,25 @@ public class ProductoServiceModImp implements ProductoServiceMod {
         }
         rObj.setAsNotSuccessfully("No se encontró el producto para ser eliminado");
         return rObj;
-    }
+    }    
 
-    public ResponseObject descontarUnidadesStock(int idProducto, Producto producto, int unidades){
+    public ResponseObject modificarUnidadesStock(int idProducto, Producto producto, int unidades, TypeModStock typeModStock){
         rObj = new ResponseObject();
-        producto.setStockProducto(producto.getStockProducto()-unidades);
+        if(typeModStock == TypeModStock.INCRESE){
+            producto.setStockProducto(producto.getStockProducto()+unidades);
+        } else {
+            producto.setStockProducto(producto.getStockProducto()-unidades);
+        }
+
         rObj = this.actualizar(idProducto, producto);
         if(rObj.isSuccessfully()){
-            producto = (Producto) rObj.getObj();
+            producto = (Producto) rObj.getObj();  
             if(producto.getStockProducto() <= producto.getStockMinimoProducto()){
                 System.out.println("Crea notificacion de abastecimineto");
-            }
+            }                      
         }
         return rObj;
-    }    
+    }
 
 }
 
